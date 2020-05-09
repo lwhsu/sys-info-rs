@@ -74,7 +74,7 @@ unsigned int get_cpu_num(void) {
 }
 
 unsigned long get_cpu_speed(void) {
-	unsigned long speed;
+	int speed;
 	size_t len;
 
 	len = sizeof(speed);
