@@ -38,6 +38,7 @@ const char *get_os_type(void) {
 		strncpy(s, "FreeBSD", len);
 	strncpy(s, buf, len);
 
+	//XXX: memory leak?
 	return s;
 }
 
@@ -55,6 +56,7 @@ const char *get_os_release(void) {
 		strncpy(s, "Unknown", len);
 	strncpy(s, buf, len);
 
+	//XXX: memory leak?
 	return s;
 }
 
