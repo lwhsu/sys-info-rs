@@ -9,6 +9,7 @@
 #include <string.h>
 #include <paths.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 #include "info.h"
 
@@ -110,6 +111,21 @@ MemInfo get_mem_info(void) {
 		//XXX
 	}
 
+	struct kvm_swap kswap[16];
+	static struct kvm_swap swtot;
+	int i, n;
+
+	int pagesize;
+	pagesize = getpagesize();
+
+	n = kvm_getswapinfo(kd, kswap, sizeof kswap / sizeof kswap[0],
+	    SWIF_DEV_PREFIX);
+
+	for (i = 0; i < n; ++i) {
+		swtot.ksw_total += kswap[i].ksw_total;
+		swtot.ksw_used += kswap[i].ksw_used;
+	}
+
 	//FIXME
 //	static unsigned long long size = 0;
 //	size_t len;
@@ -139,8 +155,8 @@ MemInfo get_mem_info(void) {
 	mi.buffers     = 0;
 	mi.cached      = 0;
 
-	mi.swap_total  = 0;
-	mi.swap_free   = 0;
+	mi.swap_total  = (unsigned long long)swtot.ksw_total * pagesize;
+	mi.swap_free   = (unsigned long long)(swtot.ksw_total - swtot.ksw_used) * pagesize;
 
 	return mi;
 }
