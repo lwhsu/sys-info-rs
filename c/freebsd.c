@@ -128,6 +128,8 @@ MemInfo get_mem_info(void) {
 	//FIXME
 //	static unsigned long long size = 0;
 	unsigned long physmem;
+	int active_count;
+	int free_count;
 	size_t len;
 	int mib[2];
 //	vm_statistics_data_t vm_stat;
@@ -152,15 +154,24 @@ MemInfo get_mem_info(void) {
 //	host_statistics(mach_host_self(), HOST_VM_INFO,
 //				(host_info_t)&vm_stat, &count);
 
-	mi.total       = physmem / 1024;
-//	mi.avail       = vm_stat.active_count * PAGE_SIZE / 1024;
-//	mi.free        = vm_stat.free_count * PAGE_SIZE / 1024;
-	mi.avail       = 0;
-	mi.free        = 0;
+// vm.stats.vm.v_active_count
+// vm.stats.vm.v_free_count
+	len = sizeof(active_count);
+	if (sysctlbyname("vm.stats.vm.v_active_count",
+			 &active_count, &len, NULL, 0) != 0) {
+		//XXX
+	}
+	len = sizeof(free_count);
+	if (sysctlbyname("vm.stats.vm.v_free_count",
+			 &free_count, &len, NULL, 0) != 0) {
+		//XXX
+	}
 
+	mi.total       = (unsigned long long)physmem / 1024;
+	mi.avail       = (unsigned long long)active_count * pagesize / 1024;
+	mi.free        = (unsigned long long)free_count * pagesize / 1024;
 	mi.buffers     = 0;
 	mi.cached      = 0;
-
 	mi.swap_total  = (unsigned long long)swtot.ksw_total * pagesize / 1024;
 	mi.swap_free   = (unsigned long long)(swtot.ksw_total - swtot.ksw_used) * pagesize / 1024;
 
