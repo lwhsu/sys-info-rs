@@ -125,15 +125,11 @@ MemInfo get_mem_info(void) {
 		swtot.ksw_used += kswap[i].ksw_used;
 	}
 
-	//FIXME
-//	static unsigned long long size = 0;
 	unsigned long physmem;
 	int active_count;
 	int free_count;
 	size_t len;
 	int mib[2];
-//	vm_statistics_data_t vm_stat;
-//	mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
 	MemInfo mi;
 
 	len = sizeof(physmem);
@@ -143,24 +139,13 @@ MemInfo get_mem_info(void) {
 	{
 		//XXX
 	}
-//	if (size == 0) {
-//		mib[0] = CTL_HW;
-//		mib[1] = HW_MEMSIZE;
-//		len = sizeof(size);
-//		sysctl(mib, 2, &size, &len, NULL, 0);
-//		size /= 1024;
-//	}
-//
-//	host_statistics(mach_host_self(), HOST_VM_INFO,
-//				(host_info_t)&vm_stat, &count);
 
-// vm.stats.vm.v_active_count
-// vm.stats.vm.v_free_count
 	len = sizeof(active_count);
 	if (sysctlbyname("vm.stats.vm.v_active_count",
 			 &active_count, &len, NULL, 0) != 0) {
 		//XXX
 	}
+
 	len = sizeof(free_count);
 	if (sysctlbyname("vm.stats.vm.v_free_count",
 			 &free_count, &len, NULL, 0) != 0) {
