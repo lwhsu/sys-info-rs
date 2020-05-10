@@ -155,8 +155,8 @@ MemInfo get_mem_info(void) {
 	mi.buffers     = 0;
 	mi.cached      = 0;
 
-	mi.swap_total  = (unsigned long long)swtot.ksw_total * pagesize;
-	mi.swap_free   = (unsigned long long)(swtot.ksw_total - swtot.ksw_used) * pagesize;
+	mi.swap_total  = (unsigned long long)swtot.ksw_total * pagesize / 1024;
+	mi.swap_free   = (unsigned long long)(swtot.ksw_total - swtot.ksw_used) * pagesize / 1024;
 
 	return mi;
 }
