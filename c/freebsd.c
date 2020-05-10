@@ -127,12 +127,20 @@ MemInfo get_mem_info(void) {
 
 	//FIXME
 //	static unsigned long long size = 0;
-//	size_t len;
-//	int mib[2];
+	unsigned long physmem;
+	size_t len;
+	int mib[2];
 //	vm_statistics_data_t vm_stat;
 //	mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
 	MemInfo mi;
 
+	len = sizeof(physmem);
+	mib[0] = CTL_HW;
+	mib[1] = HW_PHYSMEM;
+	if (sysctl(mib, 2, &physmem, &len, NULL, 0) != 0)
+	{
+		//XXX
+	}
 //	if (size == 0) {
 //		mib[0] = CTL_HW;
 //		mib[1] = HW_MEMSIZE;
@@ -144,10 +152,9 @@ MemInfo get_mem_info(void) {
 //	host_statistics(mach_host_self(), HOST_VM_INFO,
 //				(host_info_t)&vm_stat, &count);
 
-//	mi.total       = size;
+	mi.total       = physmem / 1024;
 //	mi.avail       = vm_stat.active_count * PAGE_SIZE / 1024;
 //	mi.free        = vm_stat.free_count * PAGE_SIZE / 1024;
-	mi.total       = 0;
 	mi.avail       = 0;
 	mi.free        = 0;
 
