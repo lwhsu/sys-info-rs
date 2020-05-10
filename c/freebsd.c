@@ -1,6 +1,5 @@
 #include <kvm.h>
 #include <sys/param.h>
-//#include <sys/types.h>
 #include <sys/sysctl.h>
 #include <sys/mount.h>
 #include <sys/user.h>
@@ -162,7 +161,6 @@ MemInfo get_mem_info(void) {
 }
 
 DiskInfo get_disk_info(void) {
-	//FIXME
 	DiskInfo di;
 	struct statfs *mntbuf;
 	const char **vfslist;
@@ -203,7 +201,6 @@ DiskInfo get_disk_info(void) {
 
 /* Internal definitions */
 const char **makevfslist(char *fslist) {
-	//FIXME
 	const char **av;
 	int i;
 	char *nextcp;
@@ -235,7 +232,6 @@ const char **makevfslist(char *fslist) {
 
 size_t regetmntinfo(struct statfs **mntbufp, long mntsize,
 		    const char **vfslist) {
-	//FIXME
 	int i, j;
 	struct statfs *mntbuf;
 
@@ -253,7 +249,6 @@ size_t regetmntinfo(struct statfs **mntbufp, long mntsize,
 }
 
 int checkvfsname(const char *vfsname, const char **vfslist) {
-	//FIXME
 
 	if (vfslist == NULL)
 		return (0);
@@ -266,7 +261,6 @@ int checkvfsname(const char *vfsname, const char **vfslist) {
 }
 
 char *makenetvfslist(void){
-	//FIXME
 	char *str, *strptr, **listptr;
 	int mib[4], maxvfsconf, cnt=0, i;
 	size_t miblen;
